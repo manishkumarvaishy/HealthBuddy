@@ -80,7 +80,7 @@ namespace HealthBuddy
                 }
                 else
                 {
-                    string message = string.Format("None", result.Query);
+                    string message = string.Format(Messages.None, result.Query);
 
                     await context.PostAsync(message);
 
@@ -96,7 +96,7 @@ namespace HealthBuddy
 
 
         [LuisIntent("welcome")]
-        public async Task Welcome(IDialogContext context, IAwaitable<IMessageActivity> activity,  LuisRequest result)       
+        public async Task Welcome(IDialogContext context, IAwaitable<IMessageActivity> activity,  LuisResult result)       
         {
             string name = "";
             string id = "";
@@ -110,5 +110,22 @@ namespace HealthBuddy
             
            
         }
+
+        [LuisIntent("health")]
+        public async Task Health(IDialogContext context, IAwaitable<IMessageActivity> activity, LuisResult result)
+        {
+            string name = "";
+            string id = "";
+            var message = await activity;
+            var from = message.From.Id;
+            name = message.From.Name;
+            string reply = string.Format(Messages.WelcomeText, name);
+            await context.PostAsync(reply);
+            context.Wait(this.MessageReceived);
+
+
+
+        }
+
     }
 }
